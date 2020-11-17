@@ -33,12 +33,12 @@ Invoke-Expression -Command (Get-ECRLoginCommand).Command
 Set-Variable UE4DOCKER_TAG_NAMESPACE=ue4
 
 # Build the ue4-minimal image
-ue4-docker build $engineVersion --no-engine --no-full --exclude debug --exclude templates -username $ue4GitUsername -password $ue4GitPersonalAccessToken
+ue4-docker build $engineVersion --no-engine --exclude debug --exclude templates -username $ue4GitUsername -password $ue4GitPersonalAccessToken
 ue4-docker clean --source
 
 # Push image
 Write-Output "Push $repositoryName to ECR..."
-docker tag ue4/ue4-minimal $repositoryName
+docker tag ue4/ue4-full:$engineVersion $repositoryName
 docker push $repositoryName
 
 return $LASTEXITCODE
