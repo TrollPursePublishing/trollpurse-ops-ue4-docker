@@ -38,7 +38,7 @@ ue4-docker clean --source
 
 # Push image
 Write-Output "Push $repositoryName to ECR..."
-docker tag ue4/ue4-minimal $repositoryName/ue4-minimal
-docker push $repositoryName/ue4-minimal
+docker tag ue4/ue4-minimal $repositoryName
+docker push $repositoryName
 
 return $LASTEXITCODE
