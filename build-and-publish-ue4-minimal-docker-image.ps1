@@ -21,6 +21,11 @@ Invoke-Expression ((New-Object System.Net.WebClient).DownloadString(
 ))
 choco install -y python
 refreshenv
+choco install -y pip
+refreshenv
+
+python --version
+pip --version
 
 # Setup ue4 docker
 pip install ue4-docker
