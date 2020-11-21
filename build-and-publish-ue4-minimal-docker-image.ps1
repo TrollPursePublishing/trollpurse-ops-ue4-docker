@@ -19,12 +19,10 @@ Set-ExecutionPolicy Bypass -Scope Process -Force;
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString(
 	'https://chocolatey.org/install.ps1'
 ))
-choco install -y python
-choco install -y pip
-
-$env:Path += "C:\Python39"
-$env:Path += "C:\Python39\Scripts"
-
+choco install -y python --version=3.8.0
+refreshenv
+setx PATH "%PATH%;C:\Python38;C:\Python38\Scripts;C:\Python38\lib\site-packages\pip;C:\Python38\lib\site-packages"
+refreshenv
 python --version
 pip --version
 
