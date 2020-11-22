@@ -32,7 +32,6 @@ $env:ChocolateyInstall = Convert-Path "$((Get-Command choco).Path)\..\.."
 Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 refreshenv
 
-python3 --version
 pip --version
 pip install ue4-docker
 ue4-docker setup
