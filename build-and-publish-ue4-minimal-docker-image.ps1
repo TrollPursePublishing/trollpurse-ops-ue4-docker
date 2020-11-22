@@ -28,9 +28,9 @@ Invoke-Expression -Command (Get-ECRLoginCommand).Command
 Set-Variable UE4DOCKER_TAG_NAMESPACE=ue4
 
 choco install -y python --version=3.8.0
+$env:ChocolateyInstall = Convert-Path "$((Get-Command choco).Path)\..\.."   
+Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 refreshenv
-
-$env:PATH += ";C:\Python38;C:\Python38\Scripts;C:\Python38\lib\site-packages"
 
 python3 --version
 pip --version
