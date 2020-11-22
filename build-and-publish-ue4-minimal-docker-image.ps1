@@ -19,16 +19,6 @@ Set-ExecutionPolicy Bypass -Scope Process -Force;
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString(
 	'https://chocolatey.org/install.ps1'
 ))
-choco install -y python --version=3.8.0
-refreshenv
-setx PATH "%PATH%;C:\Python38;C:\Python38\Scripts;C:\Python38\lib\site-packages\pip;C:\Python38\lib\site-packages"
-refreshenv
-python3 --version
-pip --version
-
-# Setup ue4 docker
-pip install ue4-docker
-ue4-docker setup
 
 # Authenticate with ECR
 Write-Output "Authenticate with ECR..."
@@ -37,12 +27,17 @@ Invoke-Expression -Command (Get-ECRLoginCommand).Command
 # Set Confiugrations
 Set-Variable UE4DOCKER_TAG_NAMESPACE=ue4
 
-# Build the ue4-minimal image
+choco install -y python --version=3.8.0
+refreshenv
+
+$env:PATH += ";C:\Python38;C:\Python38\Scripts;C:\Python38\lib\site-packages"
+
+python3 --version
+pip --version
+pip install ue4-docker
+ue4-docker setup
 ue4-docker build $engineVersion --no-engine --exclude debug --exclude templates -username $ue4GitUsername -password $ue4GitPersonalAccessToken
 ue4-docker clean --source
-
-# Push image
-Write-Output "Push $repositoryName to ECR..."
 docker tag ue4/ue4-full:$engineVersion $repositoryName
 docker push $repositoryName
 
