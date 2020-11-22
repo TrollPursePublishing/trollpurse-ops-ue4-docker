@@ -23,7 +23,7 @@ choco install -y python --version=3.8.0
 refreshenv
 setx PATH "%PATH%;C:\Python38;C:\Python38\Scripts;C:\Python38\lib\site-packages\pip;C:\Python38\lib\site-packages"
 refreshenv
-python --version
+python3 --version
 pip --version
 
 # Setup ue4 docker
