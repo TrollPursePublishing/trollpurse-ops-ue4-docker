@@ -27,6 +27,7 @@ Write-Output "Authenticate with ECR..."
 Invoke-Expression -Command (Get-ECRLoginCommand).Command
 
 choco install -y python --version=3.8.0
+choco install -y git
 $env:ChocolateyInstall = Convert-Path "$((Get-Command choco).Path)\..\.."   
 Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 refreshenv
