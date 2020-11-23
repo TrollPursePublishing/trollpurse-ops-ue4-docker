@@ -14,22 +14,6 @@ trap
 }
 
 Write-Output 'Setting Docker Storage Opts Size...'
-$storageOpts = ,'size=550GB'
-
-$dockerConfig = Get-Content -Path C:\ProgramData\Docker\config\daemon.json -Raw | ConvertFrom-Json
-Write-Output "Previous Config..."
-$dockerConfig | ConvertTo-Json -depth 100 | Write-Output
-if($dockerConfig.'storage-opts' -eq $nul) {
-  Add-Member -InputObject $dockerConfig -Name 'storage-opts' -MemberType 'NoteProperty' -Value $storageOpts
-} else {
-  $dockerConfig.'storage-opts' = $storageOpts
-}
-$dockerConfig | ConvertTo-Json -depth 100 | Out-File C:\ProgramData\Docker\config\daemon.json
-$dockerConfig = Get-Content -Path C:\ProgramData\Docker\config\daemon.json -Raw | ConvertFrom-Json
-Write-Output "New Config..."
-$dockerConfig | ConvertTo-Json -depth 100 | Write-Output
-
-Write-Output 'Docker Storage Opts changed, no need to restart deamon because ue4-docker setup will do so.'
 
 # Install Python, Required for ue4-docker
 Write-Output "Installing Python 3 latest"
@@ -47,8 +31,11 @@ $env:ChocolateyInstall = Convert-Path "$((Get-Command choco).Path)\..\.."
 Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 refreshenv
 
+python --version
 pip --version
-pip install ue4-docker
+pip install git+https://github.com/TrollPursePublishing/ue4-docker.git@550_Windows_Patch
+
+ue4-docker version
 ue4-docker setup
 ue4-docker build $engineVersion --no-engine --exclude debug --exclude templates -username $ue4GitUsername -password $ue4GitPersonalAccessToken
 
