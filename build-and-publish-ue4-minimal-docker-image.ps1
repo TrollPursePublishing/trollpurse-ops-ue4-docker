@@ -14,8 +14,6 @@ trap
 }
 
 Write-Output 'Setting Docker Storage Opts Size...'
-Stop-Service *docker*
-
 $storageOpts = ,'size=550GB'
 
 $dockerConfig = Get-Content -Path C:\ProgramData\Docker\config\daemon.json -Raw | ConvertFrom-Json
@@ -31,7 +29,7 @@ $dockerConfig = Get-Content -Path C:\ProgramData\Docker\config\daemon.json -Raw 
 Write-Output "New Config..."
 $dockerConfig | ConvertTo-Json -depth 100 | Write-Output
 
-Start-Service *docker*
+Write-Output 'Docker Storage Opts changed, no need to restart deamon because ue4-docker setup will do so.'
 
 # Install Python, Required for ue4-docker
 Write-Output "Installing Python 3 latest"
