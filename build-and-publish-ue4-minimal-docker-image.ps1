@@ -13,18 +13,23 @@ trap
   exit 1
 }
 
+Write-Output 'Setting Docker Storage Opts Size...'
 Stop-Service *docker*
 
 $storageOpts = ,'size=550GB'
 
 $dockerConfig = Get-Content -Path C:\ProgramData\Docker\config\daemon.json -Raw | ConvertFrom-Json
-$dockerConfig
+Write-Output "Previous Config..."
+$dockerConfig | ConvertTo-Json -depth 100 | Write-Output
 if($dockerConfig.'storage-opts' -eq $nul) {
   Add-Member -InputObject $dockerConfig -Name 'storage-opts' -MemberType 'NoteProperty' -Value $storageOpts
 } else {
   $dockerConfig.'storage-opts' = $storageOpts
 }
 $dockerConfig | ConvertTo-Json -depth 100 | Out-File C:\ProgramData\Docker\config\daemon.json
+$dockerConfig = Get-Content -Path C:\ProgramData\Docker\config\daemon.json -Raw | ConvertFrom-Json
+Write-Output "New Config..."
+$dockerConfig | ConvertTo-Json -depth 100 | Write-Output
 
 Start-Service *docker*
 
