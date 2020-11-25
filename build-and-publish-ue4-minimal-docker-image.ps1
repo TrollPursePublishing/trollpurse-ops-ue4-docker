@@ -32,10 +32,16 @@ refreshenv
 
 python --version
 pip --version
+docker version
+
 pip install git+https://github.com/TrollPursePublishing/ue4-docker.git@550_Windows_Patch
 
-ue4-docker info
 ue4-docker setup
+
+Start-Process powershell.exe -Verb Runas -ArgumentList "-Command & {Restart-Service *docker*}" -Wait
+
+ue4-docker info
+
 ue4-docker build $engineVersion --no-engine --exclude debug --exclude templates -username $ue4GitUsername -password $ue4GitPersonalAccessToken
 
 #Assume Windows Server 2019
