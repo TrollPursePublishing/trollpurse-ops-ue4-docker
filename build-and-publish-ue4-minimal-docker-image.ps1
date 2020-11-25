@@ -13,8 +13,6 @@ trap
   exit 1
 }
 
-Write-Output 'Setting Docker Storage Opts Size...'
-
 # Install Python, Required for ue4-docker
 Write-Output "Installing Python 3 latest"
 Set-ExecutionPolicy Bypass -Scope Process -Force;
@@ -36,25 +34,18 @@ python --version
 pip --version
 pip install git+https://github.com/TrollPursePublishing/ue4-docker.git@550_Windows_Patch
 
-ue4-docker version
+ue4-docker info
 ue4-docker setup
 ue4-docker build $engineVersion --no-engine --exclude debug --exclude templates -username $ue4GitUsername -password $ue4GitPersonalAccessToken
 
 #Assume Windows Server 2019
-$prereqRepoName = "${repositoryName}ue4/ue4-build-prerequisites:ltsc2019"
-$minimalRepoName = "${repositoryName}ue4/ue4-minimal:${engineVersion}-ltsc2019"
-$fullRepoName = "${repositoryName}ue4/ue4-full:${engineVersion}-ltsc2019"
-$currentMinimalRepoTag = "adamrehn/ue4-minimal:${engineVersion}-ltsc2019"
+$fullRepoName = "${repositoryName}:${engineVersion}-ltsc2019"
 $currentFullRepoTag = "adamrehn/ue4-full:${engineVersion}-ltsc2019"
 
-docker tag adamrehn/ue4-build-prerequisites:ltsc2019 $prereqRepoName
-docker tag $currentMinimalRepoTag $minimalRepoName
 docker tag $currentFullRepoTag $fullRepoName
 
 ue4-docker clean --source
 
-docker push $prereqRepoName
-docker push $minimalRepoName
 docker push $fullRepoName
 
 return $LASTEXITCODE
